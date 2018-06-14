@@ -19,7 +19,7 @@
         "friendsofphp/php-cs-fixer": "^2.12",
         "mockery/mockery": "^1.1",
         "php-mock/php-mock-phpunit": "^2.1",
-        "phpmd/phpmd": "^2.6",
+        "phpmd/phpmd": "dev-master as 3.0",
         "phpunit/phpunit": "~7.0",
         "two-thirds/artisan-anywhere": "1.*"
     },

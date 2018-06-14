@@ -64,6 +64,7 @@
     <rule ref="rulesets/unusedcode.xml/UnusedLocalVariable">
         <properties>
             <property name="allow-unused-foreach-variables" value="true" />
+            <property name="exceptions" value="unused,_" />
         </properties>
     </rule>
     <rule ref="rulesets/unusedcode.xml/UnusedPrivateMethod" />
