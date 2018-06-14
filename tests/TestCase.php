@@ -13,8 +13,10 @@ class TestCase extends BaseTestCase
      * @param  \Illuminate\Foundation\Application  $app
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    protected function getPackageProviders($unused)
+    protected function getPackageProviders($app)
     {
         return [
             TestSuiteServiceProvider::class,
