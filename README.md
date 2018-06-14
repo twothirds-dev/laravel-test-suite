@@ -27,4 +27,3 @@ Laravel Test Suite can be installed through composer:
 ## Test your code
 
 Just run `php artisan test` to run the test suite against your codebase.
-```
