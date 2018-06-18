@@ -64,7 +64,7 @@ class RunTestsCommand extends Command
             ->setTty(true)
             ->run();
 
-        if (! $rval && file_exists('./coverage/index.html') && $this->option('open')) {
+        if (! $rval && $this->option('open')) {
             exec('open coverage/index.html');
         }
 
