@@ -37,7 +37,7 @@ class RunTestsCommand extends Command
         $command = './vendor/bin/phpunit';
 
         if (! $this->option('simple')) {
-            $command = 'phpdbg -qrr ' . $command;
+            $command = 'phpdbg -qrr -dmemory_limit=2G ' . $command;
         }
 
         if (! $this->option('all')) {
