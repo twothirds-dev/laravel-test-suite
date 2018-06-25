@@ -41,7 +41,7 @@ class RunTestsCommand extends Command
         }
 
         if (! $this->option('all')) {
-            $command .= ' --stop-on-error --stop-on-warning --stop-on-risky --stop-on-skipped';
+            $command .= ' --stop-on-error --stop-on-failure --stop-on-warning --stop-on-risky --stop-on-skipped --stop-on-incomplete --fail-on-warning --fail-on-risky';
         }
 
         if ($this->option('debug')) {

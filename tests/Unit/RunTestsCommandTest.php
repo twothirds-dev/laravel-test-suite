@@ -86,7 +86,7 @@ class RunTestsCommandTest extends TestCase
     {
         $this->app->bind(Process::class, function ($unused, $params) {
             $this->assertEquals(
-                'phpdbg -qrr -dmemory_limit=2G ./vendor/bin/phpunit --stop-on-error --stop-on-warning --stop-on-risky --stop-on-skipped',
+                'phpdbg -qrr -dmemory_limit=2G ./vendor/bin/phpunit --stop-on-error --stop-on-failure --stop-on-warning --stop-on-risky --stop-on-skipped --stop-on-incomplete --fail-on-warning --fail-on-risky',
                 $params['commandline']
             );
 
