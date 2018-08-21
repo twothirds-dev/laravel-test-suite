@@ -5,8 +5,36 @@ require 'vendor/autoload.php';
 
 $artisan = new TwoThirds\ArtisanAnywhere\Artisan(__DIR__);
 
+$artisan->setConfig(['test-suite' => [
+    'enabled' => [
+        'phpunit' => true,
+        'php-cs-fixer' => true,
+        'phpmd' => true,
+    ],
+    'phpunit' => [
+        'code-coverage' => [
+            'enabled' => true,
+            'driver' => 'phpdbg',
+            'phpdbg-config' => ['binary' => exec('which phpdbg')],
+        ],
+    ],
+    'php-cs-fixer' => [
+        'binary' => './vendor/bin/php-cs-fixer',
+        'options' => ['fix', '--using-cache=false', '--verbose', '--diff', '--diff-format=udiff', '--config=./phpcs.php'],
+        'aliases' => ['fix' => ['options-disabled' => ['--dry-run']]],
+    ],
+    'phpmd' => [
+        'binary' => './vendor/bin/phpmd',
+        'folders' => ['./src', './tests'],
+        'options' => ['{folder}', 'text', './phpmd.xml'],
+    ],
+]]);
+
 $artisan->registerCommands([
-    TwoThirds\TestSuite\Console\RunTestsCommand::class,
+    TwoThirds\TestSuite\Console\RunTestCommand::class,
+    TwoThirds\TestSuite\Console\RunPhpUnitCommand::class,
+    TwoThirds\TestSuite\Console\RunPhpCsFixerCommand::class,
+    TwoThirds\TestSuite\Console\RunPhpmdCommand::class,
 ]);
 
 exit($artisan->handle());
