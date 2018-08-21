@@ -321,7 +321,7 @@ abstract class BaseCommand extends Command
         }
 
         return $process->run(function ($type, $buffer) {
-            if (Process::ERR === $type) {
+            if ($type === Process::ERR) {
                 return $this->output->write("<error>$buffer</error>");
             }
 
