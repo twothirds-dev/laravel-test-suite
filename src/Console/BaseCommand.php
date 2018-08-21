@@ -308,13 +308,25 @@ abstract class BaseCommand extends Command
 
         $this->verbose(implode(' ', $commands));
 
-        return app()->makeWith(Process::class, [
+        $process = app()->makeWith(Process::class, [
             'commandline' => $commands,
             'cwd'         => base_path(),
         ])
-            ->setEnv($this->getCleanEnv())
-            ->setTty(! $this->option('without-tty'))
-            ->run();
+            ->setEnv($this->getCleanEnv());
+
+        if (! $this->option('without-tty')) {
+            return $process
+                ->setTty(true)
+                ->run();
+        }
+
+        return $process->run(function ($type, $buffer) {
+            if (Process::ERR === $type) {
+                return $this->output->write("<error>$buffer</error>");
+            }
+
+            return $this->output->write($buffer);
+        });
     }
 
     /**
