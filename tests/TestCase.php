@@ -80,7 +80,7 @@ class TestCase extends BaseTestCase
     protected function commandLineWillEqual(array $command)
     {
         $this->app->bind(Process::class, function ($unused, $params) use ($command) {
-            $this->assertEquals($command, $params['commandline']);
+            $this->assertEquals($command, $params['command']);
 
             return $this->createProcessMock();
         });
