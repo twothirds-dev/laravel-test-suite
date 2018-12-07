@@ -309,8 +309,8 @@ abstract class BaseCommand extends Command
         $this->verbose(implode(' ', $commands));
 
         $process = app()->makeWith(Process::class, [
-            'commandline' => $commands,
-            'cwd'         => base_path(),
+            'command' => $commands,
+            'cwd'     => base_path(),
         ])
             ->setEnv($this->getCleanEnv());
 
