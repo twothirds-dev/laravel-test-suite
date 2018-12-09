@@ -311,6 +311,7 @@ abstract class BaseCommand extends Command
         $process = app()->makeWith(Process::class, [
             'command' => $commands,
             'cwd'     => base_path(),
+            'timeout' => $this->config('timeout', 60),
         ])
             ->setEnv($this->getCleanEnv());
 
