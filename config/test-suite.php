@@ -9,6 +9,7 @@ return [
     ],
 
     'phpunit' => [
+        'timeout'       => 120,
         'code-coverage' => [
             'enabled'       => true,
             'driver'        => 'phpdbg',
