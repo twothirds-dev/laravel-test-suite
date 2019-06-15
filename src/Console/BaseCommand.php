@@ -4,6 +4,7 @@ namespace TwoThirds\TestSuite\Console;
 
 use Closure;
 use Exception;
+use ReflectionClass;
 use ReflectionObject;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
@@ -308,10 +309,14 @@ abstract class BaseCommand extends Command
 
         $this->verbose(implode(' ', $commands));
 
+        $processParams = (new ReflectionClass(Process::class))
+            ->getConstructor()
+            ->getParameters();
+
         $process = app()->makeWith(Process::class, [
-            'command' => $commands,
-            'cwd'     => base_path(),
-            'timeout' => $this->config('timeout', 60),
+            $processParams[0]->name => $commands,
+            'cwd'                   => base_path(),
+            'timeout'               => $this->config('timeout', 60),
         ])
             ->setEnv($this->getCleanEnv());
 

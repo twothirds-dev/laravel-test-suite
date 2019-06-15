@@ -11,6 +11,7 @@ I welcome any additional tools or bugfixes via pull / merge request.
 
 - [Installation](#installation)
 	- [Composer](#composer)
+	- [Register service provider](#register-service-provider)
 	- [Publishing config \(optional\)](#publishing-config-optional)
 	- [Test your code](#test-your-code)
 
@@ -25,6 +26,15 @@ I welcome any additional tools or bugfixes via pull / merge request.
 Laravel Test Suite can be installed through composer:
 
     composer require --dev two-thirds/laravel-test-suite
+
+<a id="register-service-provider"></a>
+## Register service provider
+
+If you are using Laravel 5.5 or greater, the service provider will be loaded automatically. If using 5.4, add the following to the `providers` array of `config/app.php`:
+
+```
+        TwoThirds\TestSuite\TestSuiteServiceProvider::class,
+```
 
 <a id="publishing-config-optional"></a>
 ## Publishing config (optional)
