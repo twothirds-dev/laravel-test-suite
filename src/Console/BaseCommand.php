@@ -6,12 +6,14 @@ use Closure;
 use Exception;
 use ReflectionClass;
 use ReflectionObject;
+use ReflectionException;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class BaseCommand extends Command
@@ -64,6 +66,7 @@ abstract class BaseCommand extends Command
                 );
 
             case ArgvInput::class:
+            case StringInput::class:
                 return $this->getInputProperty('tokens');
 
             default:
@@ -82,7 +85,15 @@ abstract class BaseCommand extends Command
     {
         $reflection = new ReflectionObject($this->input);
 
-        $property = $reflection->getProperty($name);
+        try {
+            $property = $reflection->getProperty($name);
+        } catch (ReflectionException $exception) {
+            if (! $parent = $reflection->getParentClass()) {
+                return [];
+            }
+            $property = $parent->getProperty($name);
+        }
+
         $property->setAccessible(true);
 
         return $property->getValue($this->input);
