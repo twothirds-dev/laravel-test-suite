@@ -17,7 +17,7 @@ class RunDuskCommandTest extends TestCase
         config(['test-suite.dusk' => []]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             'artisan',
             'dusk',
         ]);
@@ -33,7 +33,7 @@ class RunDuskCommandTest extends TestCase
         config(['test-suite.dusk' => []]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             'artisan',
             'dusk',
             '--foobar',
@@ -50,7 +50,7 @@ class RunDuskCommandTest extends TestCase
         config(['test-suite.dusk' => []]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             'artisan',
             'dusk',
             '--foobar=barbaz',

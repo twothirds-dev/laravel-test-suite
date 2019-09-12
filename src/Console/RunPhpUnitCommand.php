@@ -3,6 +3,7 @@
 namespace TwoThirds\TestSuite\Console;
 
 use Exception;
+use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 
 class RunPhpUnitCommand extends BaseCommand
@@ -51,7 +52,7 @@ class RunPhpUnitCommand extends BaseCommand
             $this->unhandledOptions()
         );
 
-        if (! ($rval = $this->runCommand($command)) &&
+        if (! ($rval = $this->runTestCommand($command, [], $this->output)) &&
             $this->calculateCodeCoverage() &&
             $this->option('open')
         ) {
@@ -119,7 +120,7 @@ class RunPhpUnitCommand extends BaseCommand
             $binary .= ' -dzend_extension=' . $extension;
         }
 
-        if (! str_contains(exec("$binary -v"), 'with Xdebug')) {
+        if (! Str::contains(exec("$binary -v"), 'with Xdebug')) {
             throw new Exception('Php does not seem to have proper xdebug support. ' .
                 'Try setting xdebug-extension or use a different code coverage driver');
         }
