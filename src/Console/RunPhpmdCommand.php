@@ -43,7 +43,7 @@ class RunPhpmdCommand extends BaseCommand
         return $this->foreachFolder($command, function ($command, $folder) {
             $this->line("Running for $folder");
 
-            return $this->runCommand($command);
+            return $this->runTestCommand($command);
         });
     }
 }

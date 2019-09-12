@@ -18,7 +18,7 @@ class RunPhpUnitCommandTest extends TestCase
         config(['test-suite.phpunit' => []]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/phpdbg',
+            trim(`which phpdbg`),
             '-qrr',
             './vendor/bin/phpunit',
             '--cache-result',
@@ -96,7 +96,7 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/phpdbg',
+            trim(`which phpdbg`),
             '-qrr',
             './vendor/bin/phpunit',
         ]);
@@ -124,7 +124,7 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/phpdbg',
+            trim(`which phpdbg`),
             '-qrr',
             '--foobar',
             '--barbaz',
@@ -175,11 +175,11 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->mocksFunctions('exec', [
-            ['/usr/local/bin/php -v', "PHP 7.2.4\n\twith Xdebug ..."],
+            [trim(`which php`) . ' -v', "PHP 7.2.4\n\twith Xdebug ..."],
         ]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             './vendor/bin/phpunit',
         ]);
 
@@ -203,11 +203,11 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->mocksFunctions('exec', [
-            ['/usr/local/bin/php -dzend_extension=/usr/local/lib/php/xdebug.so -v', "PHP 7.2.4\n\twith Xdebug ..."],
+            [trim(`which php`) . ' -dzend_extension=/usr/local/lib/php/xdebug.so -v', "PHP 7.2.4\n\twith Xdebug ..."],
         ]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             '-dzend_extension=/usr/local/lib/php/xdebug.so',
             './vendor/bin/phpunit',
         ]);
@@ -235,11 +235,11 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->mocksFunctions('exec', [
-            ['/usr/local/bin/php -v', "PHP 7.2.4\n\twith Xdebug ..."],
+            [trim(`which php`) . ' -v', "PHP 7.2.4\n\twith Xdebug ..."],
         ]);
 
         $this->commandLineWillEqual([
-            '/usr/local/bin/php',
+            trim(`which php`),
             '--foobar',
             '--barbaz',
             './vendor/bin/phpunit',
@@ -261,7 +261,7 @@ class RunPhpUnitCommandTest extends TestCase
         ]]);
 
         $this->mocksFunctions('exec', [
-            ['/usr/local/bin/php -v', 'PHP 7.2.4'],
+            [trim(`which php`) . ' -v', 'PHP 7.2.4'],
         ]);
 
         try {

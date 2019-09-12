@@ -7,6 +7,7 @@ use Exception;
 use ReflectionClass;
 use ReflectionObject;
 use ReflectionException;
+use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\Artisan;
@@ -145,7 +146,7 @@ abstract class BaseCommand extends Command
                 $this->option($alias) ?
                     ($config['options-enabled'] ?? []) :
                     ($config['options-disabled'] ?? [])
-                );
+            );
         }
 
         return array_unique($options);
@@ -253,7 +254,7 @@ abstract class BaseCommand extends Command
      */
     protected function name()
     {
-        $command = array_first(preg_split('/[\n\r\s]+/', $this->signature, 2));
+        $command = Arr::first(preg_split('/[\n\r\s]+/', $this->signature, 2));
 
         return str_replace('test:', '', $command);
     }
@@ -317,7 +318,7 @@ abstract class BaseCommand extends Command
      *
      * @return int
      */
-    protected function runCommand($commands)
+    protected function runTestCommand($commands)
     {
         $commands = (array) $commands;
 

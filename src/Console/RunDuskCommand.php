@@ -35,7 +35,7 @@ class RunDuskCommand extends BaseCommand
             $this->unhandledOptions()
         );
 
-        return $this->runCommand($command);
+        return $this->runTestCommand($command);
     }
 
     /**
