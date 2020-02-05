@@ -49,6 +49,8 @@ class TestCase extends BaseTestCase
             'php-cs-fixer' => true,
             'phpmd'        => true,
             'dusk'         => true,
+            'phpcs'        => true,
+            'phpcbf'       => true,
         ]]);
     }
 
