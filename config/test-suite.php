@@ -6,6 +6,7 @@ return [
         'dusk'         => class_exists('Laravel\Dusk\Dusk'),
         'php-cs-fixer' => true,
         'phpmd'        => true,
+        'phpcs'        => false,
     ],
 
     'phpunit' => [
@@ -80,4 +81,11 @@ return [
         ],
     ],
 
+    'phpcs' => [
+        'options' => [],
+    ],
+
+    'phpcbf' => [
+        'options' => [],
+    ],
 ];

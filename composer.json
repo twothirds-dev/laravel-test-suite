@@ -13,15 +13,16 @@
     "require": {
         "php": ">=7.1.3",
         "illuminate/support": "^5.4|6.*",
+        "phpmd/phpmd": "^2.8",
         "symfony/console": "^3.2|4.*",
         "symfony/process": "^3.2|4.*"
     },
     "require-dev": {
-        "phpmd/phpmd": "dev-master#85e48ad",
         "friendsofphp/php-cs-fixer": "^2.13",
-        "phpunit/phpunit": "^8.0",
         "mockery/mockery": "^1.2",
         "php-mock/php-mock-phpunit": "^2.1",
+        "phpunit/phpunit": "^8.0",
+        "squizlabs/php_codesniffer": "^3.5",
         "two-thirds/artisan-anywhere": "^1.2"
     },
     "config": {

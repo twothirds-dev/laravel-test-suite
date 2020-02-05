@@ -23,6 +23,8 @@ class TestSuiteServiceProvider extends ServiceProvider
         'dusk'         => Console\RunDuskCommand::class,
         'php-cs-fixer' => Console\RunPhpCsFixerCommand::class,
         'phpmd'        => Console\RunPhpmdCommand::class,
+        'phpcs'        => Console\RunPhpCsCommand::class,
+        'phpcbf'       => Console\RunPhpCbfCommand::class,
     ];
 
     /**

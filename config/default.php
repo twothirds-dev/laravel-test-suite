@@ -10,6 +10,8 @@ return [
         'dusk'         => class_exists('Laravel\Dusk\Dusk'),
         'php-cs-fixer' => file_exists(base_path('vendor/bin/php-cs-fixer')),
         'phpmd'        => file_exists(base_path('vendor/bin/phpmd')),
+        'phpcs'        => file_exists(base_path('vendor/bin/phpcs')),
+        'phpcbf'       => file_exists(base_path('vendor/bin/phpcbf')),
     ],
 
     'php-binary' => exec('which php'),
@@ -95,4 +97,17 @@ return [
         ],
     ],
 
+    'phpcs' => [
+        'binary' => [
+            exec('which php'),
+            './vendor/bin/phpcs',
+        ],
+    ],
+
+    'phpcbf' => [
+        'binary' => [
+            exec('which php'),
+            './vendor/bin/phpcbf',
+        ],
+    ],
 ];

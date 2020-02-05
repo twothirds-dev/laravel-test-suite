@@ -10,6 +10,7 @@ $artisan->setConfig(['test-suite' => [
         'phpunit' => true,
         'php-cs-fixer' => true,
         'phpmd' => true,
+        'phpcs' => true,
     ],
     'phpunit' => [
         'code-coverage' => [
@@ -28,6 +29,12 @@ $artisan->setConfig(['test-suite' => [
         'folders' => ['./src', './tests'],
         'options' => ['{folder}', 'text', './phpmd.xml'],
     ],
+    'phpcs' => [
+        'binary' => './vendor/bin/phpcs',
+    ],
+    'phpcbf' => [
+        'binary' => './vendor/bin/phpcbf',
+    ],
 ]]);
 
 $artisan->registerCommands([
@@ -35,6 +42,8 @@ $artisan->registerCommands([
     TwoThirds\TestSuite\Console\RunPhpUnitCommand::class,
     TwoThirds\TestSuite\Console\RunPhpCsFixerCommand::class,
     TwoThirds\TestSuite\Console\RunPhpmdCommand::class,
+    TwoThirds\TestSuite\Console\RunPhpCsCommand::class,
+    TwoThirds\TestSuite\Console\RunPhpCbfCommand::class,
 ]);
 
 exit($artisan->handle());
