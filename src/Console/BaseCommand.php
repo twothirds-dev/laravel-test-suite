@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -38,6 +39,8 @@ abstract class BaseCommand extends Command
         $this->ignoreValidationErrors();
 
         $this->addOption('without-tty', null, null, 'Disable output to TTY');
+        $this->addOption('no-clean-env', null, null, 'Do not sanitize the environment first');
+        $this->addOption('envvar', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Environment variables to use pass through');
 
         $this->addAliases();
     }
@@ -163,27 +166,50 @@ abstract class BaseCommand extends Command
     {
         foreach ($this->options() as $name => $value) {
             for ($index = 0; $index < count($options); $index++) {
-                if ($options[$index] === "--$name=$value") {
-                    array_splice($options, $index, 1);
-
-                    continue 2;
-                }
-
-                if ($options[$index] === "--$name") {
-                    if (isset($options[$index + 1]) && $options[$index + 1] === $value) {
-                        array_splice($options, $index, 2);
-
-                        continue 2;
+                if (is_array($value)) {
+                    foreach ($value as $subvalue) {
+                        $this->removeFromOptionsArray($options, $index, $name, $subvalue);
                     }
 
-                    array_splice($options, $index, 1);
-
                     continue 2;
                 }
+
+                $this->removeFromOptionsArray($options, $index, $name, $value);
             }
         }
 
         return $options;
+    }
+
+    /**
+     * Remove the provided name and value from the options array
+     *
+     * @param array &$options
+     * @param int $index
+     * @param string $name
+     * @param string $value
+     *
+     * @return void
+     */
+    protected function removeFromOptionsArray(&$options, int $index, string $name, string $value = null)
+    {
+        if ($options[$index] === "--$name=$value") {
+            array_splice($options, $index, 1);
+
+            return;
+        }
+
+        if ($options[$index] === "--$name") {
+            if (isset($options[$index + 1]) && $options[$index + 1] === $value) {
+                array_splice($options, $index, 2);
+
+                return;
+            }
+
+            array_splice($options, $index, 1);
+
+            return;
+        }
     }
 
     /**
@@ -289,14 +315,24 @@ abstract class BaseCommand extends Command
     /**
      * Gets all of the environment variables and sets them to false
      *
+     * @param array $vars
+     *
      * @return array
      */
-    protected function getCleanEnv()
+    protected function getCleanEnv(array $vars)
     {
+        $vars = collect($vars)->mapWithKeys(function ($var) {
+            $elements = explode('=', $var, 2);
+
+            return [$elements[0] => $elements[1]];
+        });
+
         return collect(getenv())
             ->transform(function ($value, $name) {
                 return $name === 'PATH' ? $value : false;
-            })->toArray();
+            })
+            ->merge($vars)
+            ->toArray();
     }
 
     /**
@@ -332,8 +368,11 @@ abstract class BaseCommand extends Command
             $processParams[0]->name => $commands,
             'cwd'                   => base_path(),
             'timeout'               => $this->config('timeout', 60),
-        ])
-            ->setEnv($this->getCleanEnv());
+        ]);
+
+        if (! $this->option('no-clean-env')) {
+            $process->setEnv($this->getCleanEnv($this->option('envvar')));
+        }
 
         if (! $this->option('without-tty')) {
             return $process
