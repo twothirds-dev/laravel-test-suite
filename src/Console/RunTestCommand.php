@@ -37,6 +37,8 @@ class RunTestCommand extends Command
                 break;
             }
         }
+
+        return $rval;
     }
 
     /**
