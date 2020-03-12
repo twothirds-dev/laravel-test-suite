@@ -14,6 +14,7 @@ I welcome any additional tools or bugfixes via pull / merge request.
 	- [Register service provider](#register-service-provider)
 	- [Publishing config \(optional\)](#publishing-config-optional)
 	- [Test your code](#test-your-code)
+		- [Running Dusk in non-headless mode](#running-dusk-in-non-headless-mode)
 
 <!-- /MarkdownTOC -->
 
@@ -54,3 +55,28 @@ Tests can be run individually as well:
 	php artisan test:dusk
 	php artisan test:php-cs-fixer
 	php artisan test:phpmd
+
+<a id="running-dusk-in-non-headless-mode"></a>
+### Running Dusk in non-headless mode
+
+Sometimes it can be useful to be able to see your dusk tests as they execute, for troubleshooting purposes. This package makes it really easy to do that using the `--show` flag, however you need to make a small change to the `DuskTestCase::driver` method:
+
+```php
+    protected function driver()
+    {
+        $options = (new ChromeOptions())->addArguments([
+            '--disable-gpu',  // Remove the '--headless' option from this array
+            '--no-sandbox',
+            '--window-size=1920,1080',
+        ]);
+
+        // Add this section
+        if (! env('DUSK_DISABLE_HEADLESS', false)) {
+            $options->addArguments(['--headless']);
+        }
+
+        ...
+    }
+```
+
+Then, you simply run `php artisan test:dusk --show` to see the chrome instance running in the foreground.
