@@ -48,7 +48,7 @@ class RunDuskCommand extends BaseCommand
         );
 
         if ($this->option('show')) {
-            $envvars = $this->input->getOption('envvar');
+            $envvars   = $this->input->getOption('envvar');
             $envvars[] = 'DUSK_DISABLE_HEADLESS=true';
             $this->input->setOption('envvar', $envvars);
         }
