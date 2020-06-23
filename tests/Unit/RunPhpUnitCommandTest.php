@@ -3,6 +3,7 @@
 namespace TwoThirds\Testing\Unit;
 
 use Exception;
+use phpmock\Mock;
 use TwoThirds\Testing\TestCase;
 
 /**
@@ -174,9 +175,11 @@ class RunPhpUnitCommandTest extends TestCase
             'aliases' => [],
         ]]);
 
-        $this->mocksFunctions('exec', [
-            [trim(`which php`) . ' -v', "PHP 7.2.4\n\twith Xdebug ..."],
-        ]);
+        $mock = new Mock('TwoThirds\TestSuite\Console', 'exec', function ($command, &$output) {
+            $command = trim(`which php`) . ' -v';
+            $output = ['PHP 7.2.4', 'with Xdebug ...', 'with Some other module ...'];
+        });
+        $mock->enable();
 
         $this->commandLineWillEqual([
             trim(`which php`),
@@ -184,6 +187,8 @@ class RunPhpUnitCommandTest extends TestCase
         ]);
 
         $this->artisan('test:phpunit');
+
+        $mock->disable();
     }
 
     /**
@@ -202,9 +207,11 @@ class RunPhpUnitCommandTest extends TestCase
             'aliases' => [],
         ]]);
 
-        $this->mocksFunctions('exec', [
-            [trim(`which php`) . ' -dzend_extension=/usr/local/lib/php/xdebug.so -v', "PHP 7.2.4\n\twith Xdebug ..."],
-        ]);
+        $mock = new Mock('TwoThirds\TestSuite\Console', 'exec', function ($command, &$output) {
+            $command = trim(`which php`) . ' -dzend_extension=/usr/local/lib/php/xdebug.so -v';
+            $output = ['PHP 7.2.4', 'with Xdebug ...', 'with Some other module ...'];
+        });
+        $mock->enable();
 
         $this->commandLineWillEqual([
             trim(`which php`),
@@ -213,6 +220,8 @@ class RunPhpUnitCommandTest extends TestCase
         ]);
 
         $this->artisan('test:phpunit');
+
+        $mock->disable();
     }
 
     /**
@@ -234,9 +243,11 @@ class RunPhpUnitCommandTest extends TestCase
             'aliases' => [],
         ]]);
 
-        $this->mocksFunctions('exec', [
-            [trim(`which php`) . ' -v', "PHP 7.2.4\n\twith Xdebug ..."],
-        ]);
+        $mock = new Mock('TwoThirds\TestSuite\Console', 'exec', function ($command, &$output) {
+            $command = trim(`which php`) . ' -v';
+            $output = ['PHP 7.2.4', 'with Xdebug ...', 'with Some other module ...'];
+        });
+        $mock->enable();
 
         $this->commandLineWillEqual([
             trim(`which php`),
@@ -246,6 +257,8 @@ class RunPhpUnitCommandTest extends TestCase
         ]);
 
         $this->artisan('test:phpunit');
+
+        $mock->disable();
     }
 
     /**
@@ -260,9 +273,11 @@ class RunPhpUnitCommandTest extends TestCase
             ],
         ]]);
 
-        $this->mocksFunctions('exec', [
-            [trim(`which php`) . ' -v', 'PHP 7.2.4'],
-        ]);
+        $mock = new Mock('TwoThirds\TestSuite\Console', 'exec', function ($command, &$output) {
+            $command = trim(`which php`) . ' -v';
+            $output = ['PHP 7.2.4', 'with Some other module ...'];
+        });
+        $mock->enable();
 
         try {
             $this->artisan('test:phpunit');
@@ -274,6 +289,8 @@ class RunPhpUnitCommandTest extends TestCase
             );
 
             return;
+        } finally {
+            $mock->disable();
         }
 
         $this->fail('Failed to catch exception with missing xdebug support');

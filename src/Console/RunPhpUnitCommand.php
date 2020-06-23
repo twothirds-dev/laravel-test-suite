@@ -120,7 +120,9 @@ class RunPhpUnitCommand extends BaseCommand
             $binary .= ' -dzend_extension=' . $extension;
         }
 
-        if (! Str::contains(exec("$binary -v"), 'with Xdebug')) {
+        exec("$binary -v", $info);
+
+        if (! Str::contains(implode(' ', $info), 'with Xdebug')) {
             throw new Exception('Php does not seem to have proper xdebug support. ' .
                 'Try setting xdebug-extension or use a different code coverage driver');
         }
